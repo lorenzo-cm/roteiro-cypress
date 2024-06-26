@@ -57,3 +57,67 @@ describe('template spec', () => {
       .should('have.length', 2);
   });
 });
+
+
+describe('My Tests', () => {
+
+  it('Clear nas tarefas feitas', () => {
+    cy.visit('http://127.0.0.1:7001');
+
+    cy.get('.new-todo')
+      .type('TESTE1{enter}');
+
+    cy.get('.new-todo')
+      .type('TESTE2{enter}');
+
+    cy.get('.todo-list li .toggle').each(($el) => {
+      cy.wrap($el).click();
+    });
+
+    cy.contains('Clear completed').click();
+
+    cy.get('.todo-list li')
+      .should('have.length', 0);
+  });
+
+
+  it('Editar Tarefa', () => {
+    cy.visit('http://127.0.0.1:7001');
+
+    cy.get('.new-todo')
+      .type('TESTE1{enter}');
+
+    cy.get('.todo-list li')
+      .dblclick()
+    
+    cy.get('.todo-list li .edit')
+      .clear()
+      .type('TESTE_MODIFICADO{enter}');
+
+    cy.get('.todo-list li')
+      .should('have.text', 'TESTE_MODIFICADO');
+  })
+
+  it('Marca como completa e desmarca', () => {
+    cy.visit('http://127.0.0.1:7001');
+
+    cy.get('.new-todo')
+      .type('TESTE1{enter}');
+
+    cy.get('.todo-list li .toggle')
+      .first()
+      .click();
+
+    cy.contains('Completed').click();
+    cy.get('.todo-list li')
+      .should('have.length', 1)
+
+    cy.get('.todo-list li .toggle')
+      .first()
+      .click();
+
+    cy.get('.todo-list li')
+      .should('have.length', 0)
+  })
+
+})
